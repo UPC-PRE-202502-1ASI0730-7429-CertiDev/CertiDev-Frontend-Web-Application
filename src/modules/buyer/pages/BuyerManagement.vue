@@ -32,7 +32,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getBuyerCertificates } from '../../services/buyerCertificatesApi.js'
+import { getBuyerCertificates } from '../services/buyerCertificatesApi.js'
 
 const loading = ref(true)
 const certificates = ref([])
