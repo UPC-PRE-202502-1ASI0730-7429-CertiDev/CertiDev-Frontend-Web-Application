@@ -1,0 +1,139 @@
+{
+  "owners": [
+    {
+      "id": "1",
+      "name": "Carlos Propietario",
+      "dni": "12345678",
+      "email": "carlos@prop.com",
+      "phone": "987654321",
+      "password": "123456",
+      "role": "owner"
+    },
+    {
+      "id": "1e8c",
+      "name": "jhordi",
+      "dni": "12345678",
+      "email": "jhordi@gmail.com",
+      "phone": "12345678",
+      "password": "123456",
+      "role": "owner"
+    },
+    {
+      "id": "e495",
+      "name": "carper",
+      "dni": "1234567",
+      "email": "carper@gmail.com",
+      "phone": "123456789",
+      "password": "123456",
+      "role": "owner"
+    }
+  ],
+  "buyers": [
+    {
+      "id": "1",
+      "name": "Luis Comprador",
+      "dni": "87654321",
+      "email": "luis@comp.com",
+      "phone": "912345678",
+      "password": "123456",
+      "role": "buyer"
+    }
+  ],
+  "requests": [
+    {
+      "id": "bd91",
+      "propertyName": "De las Casas",
+      "details": "- Amueblada\n- Espacio grande.",
+      "status": "en inspección",
+      "createdAt": "2025-10-10T06:40:48.464Z"
+    },
+    {
+      "id": "8c89",
+      "propertyName": "casa",
+      "details": "casa",
+      "status": "en inspección",
+      "createdAt": "2025-10-10T07:12:29.448Z",
+      "ownerId": "1e8c"
+    },
+    {
+      "id": "d9b2",
+      "propertyName": "hogar",
+      "details": "hogar dulce hogar",
+      "status": "pendiente",
+      "createdAt": "2025-10-10T07:13:16.354Z",
+      "ownerId": "1"
+    },
+    {
+      "id": "838b",
+      "propertyName": "solicitud 1",
+      "details": "detalles solicitud 1",
+      "status": "en inspección",
+      "createdAt": "2025-10-10T17:29:59.575Z",
+      "ownerId": "1e8c"
+    },
+    {
+      "id": "8d29",
+      "propertyName": "Cutervo",
+      "details": "Detalles Cutervo",
+      "status": "pendiente",
+      "createdAt": "2025-10-10T21:36:45.435Z",
+      "ownerId": "1e8c"
+    },
+    {
+      "id": "147a",
+      "propertyName": "1",
+      "details": "1",
+      "status": "en inspección",
+      "createdAt": "2025-10-10T21:38:15.189Z",
+      "ownerId": "1e8c"
+    },
+    {
+      "id": "32c1",
+      "propertyName": "2",
+      "details": "2",
+      "status": "en inspección",
+      "createdAt": "2025-10-10T21:51:48.096Z",
+      "ownerId": "1e8c"
+    }
+  ],
+  "legalVerifications": [
+    {
+      "id": "1",
+      "userId": "1e8c",
+      "propertyName": "Casa en Miraflores",
+      "type": "Consulta SUNARP",
+      "entity": "SUNARP",
+      "status": "Limpio",
+      "observations": ""
+    },
+    {
+      "id": "2",
+      "userId": "1e8c",
+      "propertyName": "Terreno en Chorrillos",
+      "type": "Consulta Municipalidad",
+      "entity": "Municipalidad de Lima",
+      "status": "Observado",
+      "observations": "Pendiente regularización de licencia de construcción"
+    },
+    {
+      "id": "7807",
+      "userId": "1e8c",
+      "propertyName": "1",
+      "type": "Consulta SUNARP",
+      "entity": "SUNARP",
+      "status": "En revisión",
+      "observations": "11"
+    },
+    {
+      "id": "4e27",
+      "userId": "1e8c",
+      "propertyName": "2",
+      "type": "Consulta SUNARP",
+      "entity": "SUNARP",
+      "status": "Pendiente",
+      "observations": "Esperando evidencias del propietario"
+    }
+  ],
+  "evidences": [],
+  "checklist": []
+}

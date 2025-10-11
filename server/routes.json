@@ -1,0 +1,4 @@
+{
+  "/api/owners*": "/owners",
+  "/api/buyers*": "/buyers"
+}
