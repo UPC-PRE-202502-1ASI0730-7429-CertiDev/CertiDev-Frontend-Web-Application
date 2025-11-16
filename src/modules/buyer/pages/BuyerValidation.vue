@@ -1,46 +1,112 @@
 <template>
-  <div class="bg-white p-8 rounded-md shadow">
-    <h1 class="text-2xl font-semibold text-indigo-600 mb-4">Validar Certificado</h1>
-    <p class="text-gray-600 mb-6">Ingresa el código o escanea el QR del certificado que deseas validar.</p>
+  <div class="validation-container">
+    <h2>Validación de Certificados</h2>
 
-    <div class="space-y-4">
-      <input
-          v-model="hash"
-          type="text"
-          placeholder="Código o Hash del certificado"
-          class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-400"
-      />
-
-      <button
-          @click="validateCertificate"
-          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
-      >
-        Validar
-      </button>
+    <div class="section">
+      <h3>Certificados publicados</h3>
+      <div v-if="certificates.length">
+        <div
+            v-for="cert in certificates"
+            :key="cert.id"
+            class="card"
+        >
+          <p><strong>Propiedad:</strong> {{ cert.propertyName }}</p>
+          <p><strong>Propietario ID:</strong> {{ cert.ownerId }}</p>
+          <p><strong>Hash:</strong> {{ cert.hash }}</p>
+          <p><strong>Estado:</strong> {{ cert.status }}</p>
+          <p><strong>Publicado el:</strong> {{ formatDate(cert.publishedAt) }}</p>
+        </div>
+      </div>
+      <div v-else>
+        <p>No hay certificados publicados disponibles.</p>
+      </div>
     </div>
 
-    <div v-if="result" class="mt-6 border-t pt-4">
-      <h2 class="font-semibold text-lg mb-2">Resultado:</h2>
-      <p class="text-gray-700"><strong>Propiedad:</strong> {{ result.propertyName }}</p>
-      <p class="text-gray-700"><strong>Estado:</strong> {{ result.status }}</p>
-      <p class="text-gray-700"><strong>Vigencia:</strong> {{ result.validUntil }}</p>
+    <div class="section">
+      <h3>Verificar un certificado por hash</h3>
+      <input
+          v-model="searchHash"
+          type="text"
+          placeholder="Ingresa el hash del certificado"
+          class="input"
+      />
+      <button @click="verifyHash" class="btn-primary">Verificar</button>
+
+      <div v-if="foundCertificate" class="result-card">
+        <p><strong>Propiedad:</strong> {{ foundCertificate.propertyName }}</p>
+        <p><strong>Estado:</strong> {{ foundCertificate.status }}</p>
+        <p><strong>Emitido el:</strong> {{ formatDate(foundCertificate.issuedAt) }}</p>
+        <p><strong>Publicado el:</strong> {{ formatDate(foundCertificate.publishedAt) }}</p>
+      </div>
+
+      <div v-if="notFoundMessage" class="error">{{ notFoundMessage }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { validateCertificateByHash } from '../services/buyerCertificatesApi.js'
+import { ref, onMounted } from 'vue'
+import { getBuyerCertificates } from '../services/buyerCertificatesApi.js'
 
-const hash = ref('')
-const result = ref(null)
 
-async function validateCertificate() {
-  try {
-    result.value = await validateCertificateByHash(hash.value)
-  } catch (err) {
-    console.error('Error validando certificado:', err)
-    alert('Certificado no encontrado o inválido.')
+const certificates = ref([])
+const searchHash = ref('')
+const foundCertificate = ref(null)
+const notFoundMessage = ref('')
+
+onMounted(async () => {
+  certificates.value = await getBuyerCertificates()
+})
+
+const verifyHash = async () => {
+  foundCertificate.value = null
+  notFoundMessage.value = ''
+  if (!searchHash.value.trim()) {
+    notFoundMessage.value = 'Por favor ingresa un hash válido.'
+    return
+  }
+  const result = await verifyCertificateByHash(searchHash.value.trim())
+  if (result) {
+    foundCertificate.value = result
+  } else {
+    notFoundMessage.value = '❌ No se encontró ningún certificado con ese hash.'
   }
 }
+
+const formatDate = (date) => {
+  return date ? new Date(date).toLocaleString() : '—'
+}
 </script>
+
+<style scoped>
+.validation-container {
+  padding: 2rem;
+}
+.section {
+  margin-top: 1.5rem;
+}
+.card, .result-card {
+  background: #f6f6f6;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+.btn-primary {
+  background-color: #2196F3;
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.input {
+  padding: 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 0.5rem;
+}
+.error {
+  margin-top: 1rem;
+  color: red;
+}
+</style>

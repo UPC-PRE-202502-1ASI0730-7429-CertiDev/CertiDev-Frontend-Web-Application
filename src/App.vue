@@ -6,5 +6,4 @@
 </script>
 
 <style>
-/* No pongas estilos globales aquí si ya usas Tailwind */
 </style>

@@ -47,22 +47,26 @@ const routes = [
                 component: () => import('../modules/owner/pages/OwnerVerification.vue')
             },
             {
-                path: 'inspection/:requestId',
-                component: () => import('../modules/owner/inspection/pages/OwnerInspection.vue')
-            },
-
-            {
                 path: 'inspection',
                 component: () => import('../modules/owner/inspection/pages/OwnerInspectionList.vue')
             },
             {
                 path: 'inspection/:requestId',
                 component: () => import('../modules/owner/inspection/pages/OwnerInspection.vue')
+            },
+
+            // NUEVAS RUTAS ↓↓↓↓↓
+            {
+                path: 'emission',
+                component: () => import('../modules/owner/pages/OwnerEmission.vue')
+            },
+            {
+                path: 'publication',
+                component: () => import('../modules/owner/pages/OwnerPublication.vue')
             }
-
-
         ]
     },
+
 
 
 ];

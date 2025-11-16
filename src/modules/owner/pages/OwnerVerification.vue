@@ -54,7 +54,6 @@ const submitEvidence = async () => {
   const target = verifications.value.find(v => v.status === 'Pendiente')
   if (!target) return alert('No hay verificaciones pendientes')
 
-  // ✅ Actualiza el registro de verificación con evidencia
   await updateLegalVerification(target.id, {
     ...target,
     status: 'En revisión',

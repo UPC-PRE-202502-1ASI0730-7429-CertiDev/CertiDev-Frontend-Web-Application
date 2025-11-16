@@ -49,11 +49,12 @@ const selectedRequest = ref(null)
 
 const user = authService.getUser()
 
+// ✅ Cargar solicitudes correctamente
 const loadRequests = async () => {
   try {
     const res = await getRequests()
-    // Filtrar solo las solicitudes del usuario actual
-    requests.value = (res.data || []).filter(req => req.ownerId === user?.id)
+    // 🔹 getRequests ya devuelve las solicitudes del usuario actual
+    requests.value = Array.isArray(res) ? res : []
     console.log('[OwnerRequests] loadRequests ->', requests.value)
   } catch (err) {
     console.error('Error cargando solicitudes', err)
@@ -61,6 +62,7 @@ const loadRequests = async () => {
   }
 }
 
+// ✅ Crear solicitud correctamente
 const addRequest = async (data) => {
   try {
     const payload = {
@@ -71,7 +73,7 @@ const addRequest = async (data) => {
       ownerId: user.id
     }
     const res = await createRequest(payload)
-    console.log('[OwnerRequests] createRequest ->', res.data || res)
+    console.log('[OwnerRequests] createRequest ->', res)
     showForm.value = false
     await loadRequests()
   } catch (err) {
@@ -85,7 +87,6 @@ const openPayment = (req) => {
   showPayment.value = true
 }
 
-// BOTÓN DE PRUEBA: abre el modal con la primera solicitud pendiente
 const openPaymentTest = () => {
   const first = requests.value.find(r => r.status === 'pendiente')
   console.log('[OwnerRequests] openPaymentTest ->', first)
@@ -102,7 +103,6 @@ const closePayment = async () => {
   await loadRequests()
 }
 
-// maneja el evento 'paid' que envía el modal después del PUT/POST
 const onPaid = async () => {
   console.log('[OwnerRequests] onPaid -> recargando solicitudes')
   await loadRequests()

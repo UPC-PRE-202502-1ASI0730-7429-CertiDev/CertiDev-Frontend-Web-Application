@@ -5,21 +5,14 @@
       Aquí puedes revisar las solicitudes que ya se encuentran en fase de inspección técnica.
     </p>
 
-    <!-- Estado de carga -->
     <div v-if="loading" class="text-gray-500">Cargando inspecciones...</div>
 
-    <!-- Si no hay resultados -->
-    <div v-else-if="inspectionRequests?.length === 0" class="text-gray-600">
+    <div v-else-if="inspectionRequests.length === 0" class="text-gray-600">
       No hay solicitudes en inspección técnica aún.
     </div>
 
-    <!-- Lista de inspecciones -->
     <ul v-else class="divide-y divide-gray-200">
-      <li
-          v-for="r in inspectionRequests"
-          :key="r.id"
-          class="py-4 flex justify-between items-center"
-      >
+      <li v-for="r in inspectionRequests" :key="r.id" class="py-4 flex justify-between items-center">
         <div>
           <p class="font-medium text-lg">{{ r.propertyName }}</p>
           <p class="text-sm text-gray-500">
@@ -41,32 +34,23 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { getRequests } from '../../services/ownerRequestsApi.js' // ✅ Usa la función correcta
-import { useRouter } from 'vue-router'
+import { getRequests } from '../../services/ownerRequestsApi.js' // ✅ ruta y nombre corregidos
 
-const router = useRouter()
-const requests = ref([]) // ✅ Siempre inicializar vacío
+const requests = ref([])
 const loading = ref(true)
 
-// 🔹 Computed: filtra solo las solicitudes "en inspección"
-const inspectionRequests = computed(() => {
-  return requests.value?.filter(r => r.status === 'en inspección') || []
-})
+const inspectionRequests = computed(() =>
+    requests.value.filter(r => r.status === 'en inspección')
+)
 
 onMounted(async () => {
   try {
-    // ✅ Usa la función getRequests que trae las solicitudes del propietario actual
-    const { data } = await getRequests()
-    requests.value = data || []
+    const res = await getRequests() // ✅ devuelve array directo
+    requests.value = Array.isArray(res) ? res : []
   } catch (err) {
     console.error('❌ Error cargando solicitudes de inspección:', err)
   } finally {
     loading.value = false
   }
 })
-
-// 🔹 Navegación (por si lo necesitas en botones)
-const goToInspection = (id) => {
-  router.push(`/dashboard/owner/inspection/${id}`)
-}
 </script>
